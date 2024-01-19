@@ -1,11 +1,16 @@
 import { useState, useEffect, useCallback } from "react";
-import { View, Alert, Text } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import { GiftedChat, Bubble } from "react-native-gifted-chat";
-import { Chat } from "../model/message";
+
+//utisl
 import { ModelToGiftedMsg, giftedChatMsgToModel } from "../utils/transform";
 import { createMessage, deleteMessage } from "../utils/messageCrud";
+import { fetchPost } from "../utils/fetchData";
 
-interface FakeData {
+import { Chat } from "../model/message";
+import { json } from "@nozbe/watermelondb/decorators";
+
+interface ResDataTye {
   _id: string;
   text: string;
   createdAt: Date;
@@ -18,6 +23,14 @@ interface FakeData {
 
 export default function GiftedChatComponent({ chats }: { chats: Chat[] }) {
   const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const userData = {
+    id: Math.random().toFixed(5).toString(),
+    name: "AI",
+    avatar:
+      "https://www.businesstoday.com.my/wp-content/uploads/2023/12/What-is-Artiificial-IntelligenceAI.webp",
+  };
 
   useEffect(() => {
     const textMessage = [];
@@ -27,24 +40,34 @@ export default function GiftedChatComponent({ chats }: { chats: Chat[] }) {
     setMessages(textMessage);
   }, [chats]);
 
-  const userData = {
-    id: Math.random().toFixed(5).toString(),
-    name: "AI",
-    avatar:
-      "https://www.businesstoday.com.my/wp-content/uploads/2023/12/What-is-Artiificial-IntelligenceAI.webp",
+  const fetchPostData = async (msg: String) => {
+    const data = {
+      chat_owner: "htoo",
+      msg_owner: "openAI",
+      msg: msg,
+      created_at: new Date(),
+      client_src: "mobile",
+    };
+    setLoading(true);
+    const response = await fetchPost({ data: data });
+    // console.log("res >>>", response);
+    setLoading(false);
+    return response;
   };
 
-  const onSend = useCallback((text = []) => {
+  const onSend = useCallback(async (text = []) => {
+    //user message
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, text)
     );
 
-    // console.log("textGifted >>>", text);
+    //store usermessage in db
+    const chatProps = giftedChatMsgToModel(text[0]);
+    createMessage(chatProps);
 
-    //fetchFromApi
-    let fakeData: FakeData = {
+    let resData: ResDataTye = {
       _id: Math.random().toFixed(5),
-      text: "What do you want to know",
+      text: "Sever Error",
       createdAt: new Date(),
       user: {
         _id: userData.id,
@@ -53,18 +76,20 @@ export default function GiftedChatComponent({ chats }: { chats: Chat[] }) {
       },
     };
 
-    setMessages((prev) => GiftedChat.append(prev, [fakeData]));
-    //stored in DB
+    // let test: any = {};
+    // test.id = 1;
+    // test.data = JSON.stringify(encodeURI(text[0].text));
+    // console.log("test >>>", decodeURI(test.data));
+    // console.log("test 2 >>>", JSON.parse(test));
+    // resData.text = await fetchPostData(encodeURI(text[0].text));
 
-    // giftedChatMsgToModel(text[0]);
+    //fetchFromApi //AI message
+    resData.text = await fetchPostData(text[0].text);
+    setMessages((prev) => GiftedChat.append(prev, [resData]));
 
-    const chatProps = giftedChatMsgToModel(text[0]);
-    const AIProps = giftedChatMsgToModel(fakeData);
-    // console.log("chatProPsInChat >>", chatProps);
-
-    createMessage(chatProps);
+    //stored ai message in DB
+    const AIProps = giftedChatMsgToModel(resData);
     createMessage(AIProps);
-    // deleteMessage();
   }, []);
 
   return (
@@ -107,9 +132,6 @@ export default function GiftedChatComponent({ chats }: { chats: Chat[] }) {
             />
           );
         }}
-        onLongPress={() => {
-          deleteMessage();
-        }}
         minComposerHeight={30}
         scrollToBottomStyle={{ backgroundColor: "red" }}
         // renderActions={() => (
@@ -123,6 +145,13 @@ export default function GiftedChatComponent({ chats }: { chats: Chat[] }) {
         //   </View>
         // )}
       />
+      {loading && (
+        <ActivityIndicator
+          size={"large"}
+          color={"black"}
+          style={{ position: "absolute", top: 100, left: 180 }}
+        />
+      )}
     </View>
   );
 }
