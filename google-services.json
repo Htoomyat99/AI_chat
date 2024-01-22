@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "715825670133",
+    "project_id": "aichat-a2aa5",
+    "storage_bucket": "aichat-a2aa5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:715825670133:android:0eb3eac2b92bd52ef0a2bc",
+        "android_client_info": {
+          "package_name": "com.anonymous.dbTesting"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkj5FBZo8PcbAhOK9c43sFIPuZYpaJ-Yw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -63,6 +63,12 @@ target 'dbTesting' do
   pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi', :modular_headers => true
   pod 'simdjson', path: '../node_modules/@nozbe/simdjson', :modular_headers => true
 
+  
+
+  pod 'WatermelonDB', :path => '../node_modules/@nozbe/watermelondb'
+  pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi', :modular_headers => true
+  pod 'simdjson', path: '../node_modules/@nozbe/simdjson', :modular_headers => true
+
   post_install do |installer|
     react_native_post_install(
       installer,

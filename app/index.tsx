@@ -12,11 +12,11 @@ import { useState } from "react";
 import withObservables from "@nozbe/with-observables";
 
 const App = () => {
-  const [count, setCount] = useState(0);
   const router = useRouter();
 
   const handleCreateBoardGame = () => {
     // createBoardGame("Your title", 5);
+    router.push("/pushNoti");
   };
 
   const handleUpdateBoardGame = async () => {
@@ -26,16 +26,12 @@ const App = () => {
 
   const handleDeleteBoardGame = () => {
     // deleteBoardGame();
-    console.log("delete");
-  };
-
-  const goNext = () => {
     router.push("/chat");
   };
 
-  const enhance = withObservables(["chats"], ({ chats }) => ({
-    chats: chats.observe(),
-  }));
+  const goNext = () => {
+    // router.push("/chat");
+  };
 
   return (
     <View style={styles.container}>
@@ -44,22 +40,16 @@ const App = () => {
 
       <View style={styles.btnContainer}>
         <TouchableOpacity onPress={handleCreateBoardGame} style={styles.btn}>
-          <Text style={styles.text}>Create</Text>
+          <Text style={styles.text}>Push Noti</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={handleDeleteBoardGame}
-          style={[styles.btn, { backgroundColor: "red" }]}
+          style={[styles.btn, { backgroundColor: "blue" }]}
         >
-          <Text style={styles.text}>Delete All</Text>
+          <Text style={styles.text}>Chat</Text>
         </TouchableOpacity>
       </View>
-
-      {/* <GameList
-        games={gamesQuery}
-        deleteAction={handleDeleteBoardGame}
-        updateAction={handleUpdateBoardGame}
-      /> */}
 
       <TouchableOpacity onPress={goNext} style={styles.btn}>
         <Text style={styles.text}>go Next</Text>

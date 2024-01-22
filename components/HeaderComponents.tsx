@@ -15,7 +15,7 @@ const HeaderComponents = ({
       <TouchableOpacity onPress={backAction} activeOpacity={0.8}>
         <Ionicons name="chevron-back" size={33} color="#555" />
       </TouchableOpacity>
-      <Text style={styles.text}>Chat GPT</Text>
+      <Text style={styles.text}>AI Chat</Text>
       <TouchableOpacity
         style={styles.moreBtn}
         onPress={moreAction}

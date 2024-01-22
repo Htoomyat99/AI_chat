@@ -17,7 +17,6 @@ export const giftedChatMsgToModel = (msg: MsgProps) => {
   row.user_id = msg.user._id;
   row.user_name = msg.user.name;
   row.user_avatar = msg.user.avatar;
-
   return row;
 };
 

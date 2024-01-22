@@ -8,7 +8,6 @@ import { createMessage, deleteMessage } from "../utils/messageCrud";
 import { fetchPost } from "../utils/fetchData";
 
 import { Chat } from "../model/message";
-import { json } from "@nozbe/watermelondb/decorators";
 
 interface ResDataTye {
   _id: string;

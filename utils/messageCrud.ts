@@ -5,7 +5,7 @@ import { Chat } from "../model/message";
 
 const adapter = new SQLiteAdapter({
   schema: chatSchema,
-  jsi: true,
+  // jsi: true, comment out while using ios if not still okay
 });
 
 const database = new Database({
